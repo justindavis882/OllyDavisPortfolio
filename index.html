@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Olly Davis | Portfolio & Resume</title>
+    <style>
+        :root {
+            --gap: 24px;
+            --radius: 12px;
+            --page-bg: #121212;
+            --sidebar-bg: #1a1a1a;
+            --sidebar-width: 260px;
+        }
+        
+        html {
+            scroll-behavior: smooth; /* Makes navigation links glide smoothly */
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--page-bg);
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            color: #111;
+            display: flex;
+        }
+
+        /* --- Sidebar Navigation --- */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--sidebar-bg);
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 40px 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+            border-right: 1px solid #333;
+            z-index: 100;
+        }
+        .sidebar h3 {
+            margin-top: 0; color: #fff; border-bottom: 2px solid #444; padding-bottom: 10px; font-size: 1.2rem;
+        }
+        .sidebar nav {
+            display: flex; flex-direction: column; gap: 8px; flex: 1;
+        }
+        .sidebar a {
+            color: #aaa; text-decoration: none; padding: 10px 15px; border-radius: 6px; 
+            transition: background 0.2s, color 0.2s; font-weight: 500;
+        }
+        .sidebar a:hover {
+            background: rgba(255,255,255,0.1); color: #fff;
+        }
+
+        /* Sidebar Action Buttons */
+        .sidebar-actions {
+            display: flex; flex-direction: column; gap: 10px; margin-top: 20px;
+        }
+        .sidebar-actions button {
+            background-color: #333; color: white; border: none; padding: 12px;
+            border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+        .sidebar-actions button:hover { background-color: #555; transform: translateY(-2px); }
+
+        /* --- Main Content Area --- */
+        .content-wrapper {
+            margin-left: var(--sidebar-width);
+            width: calc(100% - var(--sidebar-width));
+            padding: 40px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: var(--gap);
+        }
+
+        /* Card Styling & Color Flow */
+        .card {
+            padding: 30px;
+            border-radius: var(--radius);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            transition: transform 0.2s;
+            scroll-margin-top: 40px; /* Prevents sticky headers from hiding content when scrolled */
+        }
+        .card:hover { transform: translateY(-2px); }
+
+        /* Section Color Flow */
+        .container > .card:nth-of-type(1) { background: #e0f7fa; } /* Header */
+        .container > .card:nth-of-type(2) { background: #e8f5e9; } /* Employment */
+        .container > .card:nth-of-type(3) { background: #fff3e0; } /* Projects */
+        .container > .card:nth-of-type(4) { background: #ffe0b2; } /* Graphic Design */
+        .container > .card:nth-of-type(5) { background: #fce4ec; } /* Education */
+        .container > .card:nth-of-type(6) { background: #e1bee7; } /* Certs */
+        .container > .card:nth-of-type(7) { background: #f3e5f5; } /* eCommerce */
+        .container > .card:nth-of-type(8) { background: #f5f5f5; } /* Footer */
+
+        .card h2 { margin-top: 0; border-bottom: 2px solid rgba(0,0,0,0.1); padding-bottom: 10px; color: #222; }
+        .card h3 { margin: 0 0 4px 0; font-size: 1.2rem; color: #333; }
+        .card h4 { margin: 0; font-size: 1rem; color: #555; font-weight: normal; }
+        .card p, .card li { margin: 0; color: #444; line-height: 1.6; font-size: 1rem; }
+        .card ul { margin: 10px 0 0 20px; padding: 0; }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--gap); }
+        .project-card { background: rgba(255,255,255,0.6); padding: 20px; border-radius: 8px; border: 1px solid rgba(0,0,0,0.05); }
+        .badge { display: inline-block; background: rgba(0,0,0,0.08); padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; margin-right: 5px; margin-bottom: 5px; color: #333; }
+        .center-text { text-align: center; }
+
+        /* Gallery Grid for Graphic Design */
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px; }
+        .gallery-img { width: 100%; height: 200px; object-fit: cover; border-radius: 8px; border: 2px solid rgba(0,0,0,0.05); cursor: pointer; transition: transform 0.2s; }
+        .gallery-img:hover { transform: scale(1.03); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+
+        /* Lightbox Styles */
+        #lightbox {
+            display: none; 
+            position: fixed; 
+            top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.85); 
+            z-index: 2000; 
+            justify-content: center; 
+            align-items: center; 
+            padding: 20px; 
+            box-sizing: border-box; 
+            cursor: pointer;
+        }
+        #lightbox img {
+            max-width: 90%; 
+            max-height: 90%; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+            cursor: default;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 900px) {
+            body { flex-direction: column; }
+            .sidebar { position: relative; width: 100%; height: auto; padding: 20px; border-right: none; border-bottom: 1px solid #333; }
+            .content-wrapper { margin-left: 0; width: 100%; padding: 20px; }
+            .sidebar nav { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+            .sidebar-actions { flex-direction: row; justify-content: center; }
+            .sidebar-actions button { flex: 1; max-width: 200px; }
+        }
+
+        /* Print Styles */
+        @media print {
+            body { background: white; padding: 0; color: black; font-size: 12pt; display: block; }
+            .sidebar, .no-print, #lightbox { display: none !important; }
+            .content-wrapper { margin-left: 0; width: 100%; padding: 0; }
+            .container { gap: 15px; max-width: 100%; }
+            .card { background: white !important; box-shadow: none; padding: 0 0 15px 0; border-radius: 0; page-break-inside: avoid; }
+            .card:hover { transform: none; }
+            .project-card { border: none; padding: 0; margin-bottom: 15px; background: white !important; }
+            .card h2 { border-bottom: 1px solid #000; padding-bottom: 5px; margin-bottom: 10px; }
+            .badge { border: 1px solid #666; background: transparent; }
+            a { text-decoration: none; color: black; }
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar no-print">
+        <h3>Navigation</h3>
+        <nav>
+            <a href="#about">About Me</a>
+            <a href="#employment">Employment</a>
+            <a href="#projects">Tech Projects</a>
+            <a href="#graphics">Graphic Design</a>
+            <a href="#education">Education</a>
+            <a href="#certificates">Certificates</a>
+            <a href="#ecommerce">eCommerce</a>
+            <a href="#contact">Contact</a>
+        </nav>
+        <div class="sidebar-actions">
+            <button onclick="window.print()">🖨️ Print Resume</button>
+            <button onclick="sharePortfolio()">🔗 Share Link</button>
+        </div>
+    </aside>
+
+    <div id="lightbox" onclick="closeLightbox()">
+        <img id="lightbox-img" src="" alt="Enlarged design asset" onclick="event.stopPropagation()">
+    </div>
+
+    <main class="content-wrapper">
+        <div class="container">
+            
+            <header id="about" class="card center-text">
+                <h2>Hi, I'm Olly!</h2>
+                <div style="margin-bottom: 15px;">
+                    <span class="badge" style="font-size: 0.9rem; padding: 6px 12px;">They | Them | Theirs</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 20px; text-align: left; flex-wrap: wrap; justify-content: center;">
+                    <img src="olly.png" alt="Olly Davis" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 3px solid rgba(0,0,0,0.1); flex-shrink: 0;">
+                    <p style="flex: 1; min-width: 250px;">I'm a passionate software engineer, educator, and hardware enthusiast. I specialize in full-stack development using HTML, CSS, JavaScript, React, Node.js, and Firebase. Beyond software, I build and program custom electronics, focus on professional A/V setups, and manage eCommerce operations. Welcome to my digital portfolio and resume.</p>
+                </div>
+            </header>
+
+            <section id="employment" class="card">
+                <h2>Employment History</h2>
+                <div style="margin-bottom: 15px;">
+                    <h3>Instructional Support Person (ISP)</h3>
+                    <h4>Madison Junior High School (MJHS) | Madison, IN</h4>
+                    <ul>
+                        <li>Educator specializing in Computer Science and Esports curriculums.</li>
+                    </ul>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <h3>Summer Staff</h3>
+                    <h4>Indiana Department of Natural Resources | Clifty Falls State Park</h4>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <h3>Team Lead</h3>
+                    <h4>Walmart | Madison, IN</h4>
+                </div>
+                <div>
+                    <h3>Logistics</h3>
+                    <h4>Amazon | Jeffersonville, IN</h4>
+                </div>
+            </section>
+
+            <div id="projects" class="card">
+                <h2>Software & Hardware Projects</h2>
+                <p style="margin-bottom: 10px;">View the source code for these projects and more at <a href="https://github.com/justindavis882" target="_blank">github.com/justindavis882</a>.</p>
+                <div class="grid">
+                    <div class="project-card">
+                        <h3>CodexOS</h3>
+                        <p>A custom software environment tailored specifically for writers to manage narratives, character development, and world-building.</p>
+                        <div style="margin-top: 10px;">
+                            <span class="badge">Full-Stack</span>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <h3>retroDMX</h3>
+                        <p>A web-based professional lighting console interface leveraging DMX protocols for custom stage lighting hardware systems.</p>
+                        <div style="margin-top: 10px;">
+                            <span class="badge">Hardware</span> <span class="badge">Web Dev</span> <span class="badge">A/V Production</span>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <h3>VenueOS</h3>
+                        <p>An integrated facility management platform designed to streamline operational logistics.</p>
+                        <div style="margin-top: 10px;">
+                            <span class="badge">Full-Stack</span>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <h3>Educational & CS Projects</h3>
+                        <p>A collection of educational software, curriculum resources, and applications developed during my tenure at Madison Consolidated Schools.</p>
+                        <div style="margin-top: 10px;">
+                            <span class="badge">Education</span> <span class="badge">Computer Science</span>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <h3>Firebase Applications</h3>
+                        <p>Developed multiple full-stack applications including <strong>Lite LMS</strong>, <strong>quickPOS</strong>, and <strong>familyChat</strong>.</p>
+                        <div style="margin-top: 10px;">
+                            <span class="badge">React</span> <span class="badge">Node.js</span> <span class="badge">Firebase</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <section id="graphics" class="card">
+                <h2>Graphic Design & Digital Assets</h2>
+                <p>A visual showcase of my design work spanning educational programs, theatrical productions, and commercial branding.</p>
+                
+                <div class="gallery-grid">
+                    <div>
+                        <img src="https://via.placeholder.com/600x900?text=Theatre+Poster+1" alt="MJHS Theatre Show Poster" class="gallery-img" onclick="openLightbox(this.src)">
+                        <h4 style="margin-top: 8px; text-align: center;">MJHS Theatre Design</h4>
+                    </div>
+                    
+                    <div>
+                        <img src="https://via.placeholder.com/600x900?text=Esports+Logo" alt="Esports Program Asset" class="gallery-img" onclick="openLightbox(this.src)">
+                        <h4 style="margin-top: 8px; text-align: center;">Esports Branding</h4>
+                    </div>
+                    
+                    <div>
+                        <img src="https://via.placeholder.com/600x900?text=Business+Asset" alt="Custom Business Graphic" class="gallery-img" onclick="openLightbox(this.src)">
+                        <h4 style="margin-top: 8px; text-align: center;">Commercial Assets</h4>
+                    </div>
+                </div>
+            </section>
+
+            <section id="education" class="card">
+                <h2>Education & Licensure</h2>
+                <ul>
+                    <li><strong>Licensure:</strong> Actively pursuing an Indiana Workplace Specialist license for Career and Technical Education (CTE).</li>
+                    <li><strong>Professional Development:</strong> CSTA Indiana Computer Science Professional Development Week.</li>
+                </ul>
+            </section>
+
+            <section id="certificates" class="card">
+                <h2>Digital Certificates & Badges</h2>
+                <p style="margin-bottom: 15px;">A collection of my professional certifications and continuous learning achievements.</p>
+                <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; align-items: center;">
+                    <img src="1.png" alt="Certification Badge 1" style="width: 120px; height: 120px; object-fit: contain;">
+                    <img src="2.png" alt="Certification Badge 2" style="width: 120px; height: 120px; object-fit: contain;">
+                    <img src="3.png" alt="Certification Badge 3" style="width: 120px; height: 120px; object-fit: contain;">
+                    <img src="4.png" alt="Certification Badge 4" style="width: 120px; height: 120px; object-fit: contain;">
+                    <img src="5.png" alt="Certification Badge 5" style="width: 120px; height: 120px; object-fit: contain;">
+                    <img src="6.png" alt="Certification Badge 6" style="width: 120px; height: 120px; object-fit: contain;">
+                </div>
+            </section>
+
+            <section id="ecommerce" class="card">
+                <h2>eCommerce & Business Operations</h2>
+                <p>I independently manage multiple entrepreneurial ventures, handling everything from digital storefronts to payment processing and domain management.</p>
+                <ul>
+                    <li><strong>OllyiumApparel:</strong> Custom apparel and goods via Etsy.</li>
+                    <li><strong>Web Domains:</strong> Managed properties including toteshack.com and davisvend.com.</li>
+                    <li><strong>Vending Operations:</strong> DHVending.</li>
+                </ul>
+            </section>
+
+            <footer id="contact" class="card center-text">
+                <h2>Contact & Links</h2>
+                <p>Email: <a href="mailto:justindavis882@gmail.com">justindavis882@gmail.com</a></p>
+                <p>GitHub: <a href="https://github.com/justindavis882" target="_blank">github.com/justindavis882</a></p>
+                <p style="margin-top: 20px; font-size: 0.85rem; color: #777;">&copy; 2026 Olly Davis. All rights reserved.</p>
+            </footer>
+            
+        </div>
+    </main>
+
+    <script>
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+
+        function openLightbox(imageSrc) {
+            lightboxImg.src = imageSrc;
+            lightbox.style.display = 'flex';
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        function closeLightbox() {
+            lightbox.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function sharePortfolio() {
+            const shareData = {
+                title: 'Olly Davis | Portfolio & Resume',
+                text: 'Check out the digital portfolio and resume of Olly Davis.',
+                url: 'https://justindavis882.github.io/OllyDavisPortfolio'
+            }
+            
+            if (navigator.share) {
+                navigator.share(shareData).catch((error) => console.log('Error sharing', error));
+            } else {
+                navigator.clipboard.writeText(shareData.url).then(() => {
+                    alert('Portfolio link copied to clipboard: ' + shareData.url);
+                }).catch((err) => {
+                    alert('Failed to copy link.');
+                });
+            }
+        }
+    </script>
+</body>
+</html>
