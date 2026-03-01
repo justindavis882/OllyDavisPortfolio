@@ -11,10 +11,11 @@
             --page-bg: #121212;
             --sidebar-bg: #1a1a1a;
             --sidebar-width: 260px;
+            --right-sidebar-width: 300px; /* New Right Sidebar Width */
         }
         
         html {
-            scroll-behavior: smooth; /* Makes navigation links glide smoothly */
+            scroll-behavior: smooth;
         }
 
         body {
@@ -27,7 +28,7 @@
             display: flex;
         }
 
-        /* --- Sidebar Navigation --- */
+        /* --- Left Sidebar Navigation --- */
         .sidebar {
             width: var(--sidebar-width);
             background: var(--sidebar-bg);
@@ -58,7 +59,6 @@
             background: rgba(255,255,255,0.1); color: #fff;
         }
 
-        /* Sidebar Action Buttons */
         .sidebar-actions {
             display: flex; flex-direction: column; gap: 10px; margin-top: 20px;
         }
@@ -69,16 +69,42 @@
         }
         .sidebar-actions button:hover { background-color: #555; transform: translateY(-2px); }
 
+        /* --- Right Sidebar (Vibe Check) --- */
+        .right-sidebar {
+            width: var(--right-sidebar-width);
+            background: var(--sidebar-bg);
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            right: 0;
+            padding: 40px 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+            border-left: 1px solid #333;
+            z-index: 100;
+        }
+        .right-sidebar h3 {
+            margin-top: 0; color: #1DB954; /* Spotify Green */
+            border-bottom: 2px solid #444; padding-bottom: 10px; font-size: 1.2rem; text-align: center;
+        }
+        .right-sidebar p {
+            color: #aaa; font-size: 0.9rem; text-align: center; margin-top: -10px;
+        }
+
         /* --- Main Content Area --- */
         .content-wrapper {
             margin-left: var(--sidebar-width);
-            width: calc(100% - var(--sidebar-width));
+            margin-right: var(--right-sidebar-width);
+            width: calc(100% - var(--sidebar-width) - var(--right-sidebar-width));
             padding: 40px;
             box-sizing: border-box;
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 900px;
             margin: 0 auto;
             display: flex;
             flex-direction: column;
@@ -94,19 +120,18 @@
             flex-direction: column;
             gap: 12px;
             transition: transform 0.2s;
-            scroll-margin-top: 40px; /* Prevents sticky headers from hiding content when scrolled */
+            scroll-margin-top: 40px;
         }
         .card:hover { transform: translateY(-2px); }
 
-        /* Section Color Flow */
-        .container > .card:nth-of-type(1) { background: #e0f7fa; } /* Header */
-        .container > .card:nth-of-type(2) { background: #e8f5e9; } /* Employment */
-        .container > .card:nth-of-type(3) { background: #fff3e0; } /* Projects */
-        .container > .card:nth-of-type(4) { background: #ffe0b2; } /* Graphic Design */
-        .container > .card:nth-of-type(5) { background: #fce4ec; } /* Education */
-        .container > .card:nth-of-type(6) { background: #e1bee7; } /* Certs */
-        .container > .card:nth-of-type(7) { background: #f3e5f5; } /* eCommerce */
-        .container > .card:nth-of-type(8) { background: #f5f5f5; } /* Footer */
+        .container > .card:nth-of-type(1) { background: #e0f7fa; } 
+        .container > .card:nth-of-type(2) { background: #e8f5e9; } 
+        .container > .card:nth-of-type(3) { background: #fff3e0; } 
+        .container > .card:nth-of-type(4) { background: #ffe0b2; } 
+        .container > .card:nth-of-type(5) { background: #fce4ec; } 
+        .container > .card:nth-of-type(6) { background: #e1bee7; } 
+        .container > .card:nth-of-type(7) { background: #f3e5f5; } 
+        .container > .card:nth-of-type(8) { background: #f5f5f5; } 
 
         .card h2 { margin-top: 0; border-bottom: 2px solid rgba(0,0,0,0.1); padding-bottom: 10px; color: #222; }
         .card h3 { margin: 0 0 4px 0; font-size: 1.2rem; color: #333; }
@@ -119,37 +144,25 @@
         .badge { display: inline-block; background: rgba(0,0,0,0.08); padding: 4px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; margin-right: 5px; margin-bottom: 5px; color: #333; }
         .center-text { text-align: center; }
 
-        /* Gallery Grid for Graphic Design */
+        /* Gallery Grid */
         .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px; }
         .gallery-img { width: 100%; height: 200px; object-fit: cover; border-radius: 8px; border: 2px solid rgba(0,0,0,0.05); cursor: pointer; transition: transform 0.2s; }
         .gallery-img:hover { transform: scale(1.03); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
 
-        /* Lightbox Styles */
+        /* Lightbox */
         #lightbox {
-            display: none; 
-            position: fixed; 
-            top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.85); 
-            z-index: 2000; 
-            justify-content: center; 
-            align-items: center; 
-            padding: 20px; 
-            box-sizing: border-box; 
-            cursor: pointer;
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.85); z-index: 2000; justify-content: center; align-items: center; 
+            padding: 20px; box-sizing: border-box; cursor: pointer;
         }
-        #lightbox img {
-            max-width: 90%; 
-            max-height: 90%; 
-            border-radius: 8px; 
-            box-shadow: 0 4px 24px rgba(0,0,0,0.5);
-            cursor: default;
-        }
+        #lightbox img { max-width: 90%; max-height: 90%; border-radius: 8px; box-shadow: 0 4px 24px rgba(0,0,0,0.5); cursor: default; }
 
         /* Mobile Adjustments */
-        @media (max-width: 900px) {
+        @media (max-width: 1100px) {
             body { flex-direction: column; }
             .sidebar { position: relative; width: 100%; height: auto; padding: 20px; border-right: none; border-bottom: 1px solid #333; }
-            .content-wrapper { margin-left: 0; width: 100%; padding: 20px; }
+            .right-sidebar { position: relative; width: 100%; height: auto; padding: 20px; border-left: none; border-top: 1px solid #333; }
+            .content-wrapper { margin-left: 0; margin-right: 0; width: 100%; padding: 20px; }
             .sidebar nav { flex-direction: row; flex-wrap: wrap; justify-content: center; }
             .sidebar-actions { flex-direction: row; justify-content: center; }
             .sidebar-actions button { flex: 1; max-width: 200px; }
@@ -158,8 +171,8 @@
         /* Print Styles */
         @media print {
             body { background: white; padding: 0; color: black; font-size: 12pt; display: block; }
-            .sidebar, .no-print, #lightbox { display: none !important; }
-            .content-wrapper { margin-left: 0; width: 100%; padding: 0; }
+            .sidebar, .right-sidebar, .no-print, #lightbox { display: none !important; }
+            .content-wrapper { margin-left: 0; margin-right: 0; width: 100%; padding: 0; }
             .container { gap: 15px; max-width: 100%; }
             .card { background: white !important; box-shadow: none; padding: 0 0 15px 0; border-radius: 0; page-break-inside: avoid; }
             .card:hover { transform: none; }
@@ -187,8 +200,6 @@
         <div class="sidebar-actions">
             <button onclick="window.print()">🖨️ Print Resume</button>
             <button onclick="sharePortfolio()">🔗 Share Link</button>
-
-            <button onclick="window.open('https://open.spotify.com/playlist/37i9dQZF1DX4OzrY981I1W?si=f3fd66efaf574ae2', '_blank')" style="background-color: #1DB954; color: #fff; margin-top: 10px;">🎵 Vibe Check Playlist</button>
         </div>
     </aside>
 
@@ -198,7 +209,6 @@
 
     <main class="content-wrapper">
         <div class="container">
-            
             <header id="about" class="card center-text">
                 <h2>Hi, I'm Olly!</h2>
                 <div style="margin-bottom: 15px;">
@@ -219,7 +229,7 @@
                         <li>Educator specializing in Computer Science and Esports curriculums.</li>
                     </ul>
                 </div>
-
+                <hr style="border: 0; border-top: 1px solid #eee; width: 100%; margin-bottom: 15px;">
                 <div style="margin-bottom: 15px;">
                     <h3>Freelance IT & Network Technician</h3>
                     <h4>Residential Apartment Complex</h4>
@@ -229,7 +239,7 @@
                         <li>Provided hardware troubleshooting and ongoing technical support for the property.</li>
                     </ul>
                 </div>
-                
+                <hr style="border: 0; border-top: 1px solid #eee; width: 100%; margin-bottom: 15px;">
                 <div style="margin-bottom: 15px;">
                     <h3>Summer Staff</h3>
                     <h4>Indiana Department of Natural Resources | Clifty Falls State Park</h4>
@@ -255,7 +265,6 @@
                             <span class="badge">Full-Stack</span>
                         </div>
                     </div>
-
                     <div class="project-card">
                         <h3>retroDMX</h3>
                         <p>A web-based professional lighting console interface leveraging DMX protocols for custom stage lighting hardware systems.</p>
@@ -263,7 +272,6 @@
                             <span class="badge">Hardware</span> <span class="badge">Web Dev</span> <span class="badge">A/V Production</span>
                         </div>
                     </div>
-
                     <div class="project-card">
                         <h3>VenueOS</h3>
                         <p>An integrated facility management platform designed to streamline operational logistics.</p>
@@ -271,7 +279,6 @@
                             <span class="badge">Full-Stack</span>
                         </div>
                     </div>
-
                     <div class="project-card">
                         <h3>Educational & CS Projects</h3>
                         <p>A collection of educational software, curriculum resources, and applications developed during my tenure at Madison Consolidated Schools.</p>
@@ -279,7 +286,6 @@
                             <span class="badge">Education</span> <span class="badge">Computer Science</span>
                         </div>
                     </div>
-
                     <div class="project-card">
                         <h3>Firebase Applications</h3>
                         <p>Developed multiple full-stack applications including <strong>Lite LMS</strong>, <strong>quickPOS</strong>, and <strong>familyChat</strong>.</p>
@@ -293,18 +299,15 @@
             <section id="graphics" class="card">
                 <h2>Graphic Design & Digital Assets</h2>
                 <p>A visual showcase of my design work spanning educational programs, theatrical productions, and commercial branding.</p>
-                
                 <div class="gallery-grid">
                     <div>
                         <img src="TheatrePoster.png" alt="MJHS Theatre Show Poster" class="gallery-img" onclick="openLightbox(this.src)">
                         <h4 style="margin-top: 8px; text-align: center;">MJHS Theatre Design</h4>
                     </div>
-                    
                     <div>
                         <img src="Esports.png" alt="Esports Program Asset" class="gallery-img" onclick="openLightbox(this.src)">
                         <h4 style="margin-top: 8px; text-align: center;">Esports Branding</h4>
                     </div>
-                    
                     <div>
                         <img src="Business.png" alt="Custom Business Graphic" class="gallery-img" onclick="openLightbox(this.src)">
                         <h4 style="margin-top: 8px; text-align: center;">Commercial Assets</h4>
@@ -349,9 +352,15 @@
                 <p>GitHub: <a href="https://github.com/justindavis882" target="_blank">github.com/justindavis882</a></p>
                 <p style="margin-top: 20px; font-size: 0.85rem; color: #777;">&copy; 2026 Olly Davis. All rights reserved.</p>
             </footer>
-            
         </div>
     </main>
+
+    <aside class="right-sidebar no-print">
+        <h3>🎵 Vibe Check</h3>
+        <p>Listen to "My Life is a Movie"</p>
+        
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX4OzrY981I1W?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    </aside>
 
     <script>
         const lightbox = document.getElementById('lightbox');
@@ -387,7 +396,4 @@
         }
     </script>
 </body>
-
 </html>
-
-
